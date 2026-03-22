@@ -4,11 +4,11 @@
 
 ## 功能
 
-通过 20 个 MCP Tools 覆盖 ParaTranz 核心 API：
+通过 24 个 MCP Tools 覆盖 ParaTranz 核心 API：
 
 | 分类 | 工具 | 说明 |
 |------|------|------|
-| **项目** | `list_projects` / `get_project` | 项目列表与详情 |
+| **项目** | `list_projects` / `search_projects` / `get_project` / `get_user_projects` | 项目列表、搜索、详情、用户参与的项目 |
 | **文件** | `list_files` / `get_file` | 文件列表与翻译进度 |
 | **词条** | `list_strings` / `get_string` / `update_string` / `batch_update_strings` | 词条搜索、翻译、批量操作 |
 | **术语** | `list_terms` / `get_term` / `create_term` / `update_term` / `delete_term` | 术语表 CRUD |
@@ -16,7 +16,7 @@
 | **成员** | `list_members` | 项目成员与权限 |
 | **讨论** | `list_issues` / `get_issue` / `create_issue` / `reply_to_issue` | 项目讨论管理 |
 | **导出** | `get_export_status` / `trigger_export` | 翻译包导出 |
-| **用户** | `get_user` | 用户信息 |
+| **用户** | `search_users` / `get_user` | 搜索用户、用户信息 |
 | **贡献** | `get_scores` | 成员贡献统计 |
 
 ## 安装

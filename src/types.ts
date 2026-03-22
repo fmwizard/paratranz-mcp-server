@@ -107,6 +107,31 @@ export interface Project {
     joinMode?: number;
 }
 
+/**
+ * 用户参与的项目（成员视角）
+ *
+ * 来自未文档化的 `GET /users/{userId}/projects` 接口，
+ * 返回用户作为成员参与的所有项目，含权限和项目摘要。
+ * @category Projects
+ */
+export interface UserProjectMembership {
+    id: number;
+    createdAt: string;
+    uid: number;
+    project: {
+        id: number;
+        name: string;
+        logo?: string;
+        stage?: number;
+        privacy?: number;
+    };
+    permission: Permission;
+    privacy?: number;
+    game?: string;
+    rank?: number;
+    suggest?: number;
+}
+
 /** 文件信息简略版 @category Files */
 export interface TinyFile {
     id: number;

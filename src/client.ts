@@ -16,6 +16,7 @@ import type {
     Artifact,
     Job,
     User,
+    UserProjectMembership,
     Score,
     Revision,
     Stage,
@@ -99,14 +100,23 @@ export class ParaTranzClient {
     }
 
     /**
-     * 获取项目列表
-     * @param page - 页码
-     * @param pageSize - 每页数量
+     * 获取项目列表，支持按关键词搜索
+     * @param options - 分页及筛选选项
      * @category Projects
      */
-    async getProjects(page = 1, pageSize = 50): Promise<PaginatedResult<Project>> {
+    async getProjects(
+        options: {
+            page?: number;
+            pageSize?: number;
+            filter?: string;
+        } = {}
+    ): Promise<PaginatedResult<Project>> {
         return this.request<PaginatedResult<Project>>("/projects", {
-            query: { page, pageSize },
+            query: {
+                page: options.page ?? 1,
+                pageSize: options.pageSize ?? 50,
+                filter: options.filter,
+            },
         });
     }
 
@@ -446,6 +456,30 @@ export class ParaTranzClient {
      */
     async getUser(userId: number): Promise<User> {
         return this.request<User>(`/users/${userId}`);
+    }
+
+    /**
+     * 获取用户参与的所有项目（含权限和项目摘要）
+     *
+     * 注意：此接口未在官方文档中列出，但实际可用。
+     * @param userId - 用户 ID
+     * @category Users
+     */
+    async getUserProjects(userId: number): Promise<UserProjectMembership[]> {
+        return this.request<UserProjectMembership[]>(`/users/${userId}/projects`);
+    }
+
+    /**
+     * 按关键词搜索用户
+     *
+     * 注意：此接口未在官方文档中列出，但实际可用。
+     * @param keyword - 搜索关键词（用户名模糊匹配）
+     * @category Users
+     */
+    async searchUsers(keyword: string): Promise<PaginatedResult<User>> {
+        return this.request<PaginatedResult<User>>("/users", {
+            query: { keyword },
+        });
     }
 
     /**
