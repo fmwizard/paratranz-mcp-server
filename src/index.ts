@@ -13,6 +13,7 @@ import { registerIssueTools } from "./tools/issues.js";
 import { registerArtifactTools } from "./tools/artifacts.js";
 import { registerUserTools } from "./tools/users.js";
 import { registerScoreTools } from "./tools/scores.js";
+import { registerSummaryTools } from "./tools/summary.js";
 
 // ----- Token 获取 -----
 
@@ -54,6 +55,7 @@ async function main() {
     registerArtifactTools(server, client);
     registerUserTools(server, client);
     registerScoreTools(server, client);
+    registerSummaryTools(server, client);
 
     // 启动 STDIO 传输
     const transport = new StdioServerTransport();

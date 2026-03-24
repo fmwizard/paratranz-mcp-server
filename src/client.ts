@@ -161,6 +161,7 @@ export class ParaTranzClient {
             pageSize?: number;
             file?: number;
             stage?: Stage;
+            detailed?: boolean;
         } = {}
     ): Promise<PaginatedResult<StringItem>> {
         return this.request<PaginatedResult<StringItem>>(`/projects/${projectId}/strings`, {
@@ -169,6 +170,7 @@ export class ParaTranzClient {
                 pageSize: options.pageSize ?? 50,
                 file: options.file,
                 stage: options.stage,
+                detailed: options.detailed ? 1 : undefined,
             },
         });
     }

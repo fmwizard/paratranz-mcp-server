@@ -354,3 +354,31 @@ export interface UserActivity {
     historyId: number;
     history?: History;
 }
+
+/** 翻译条目明细（用于每日汇总） @category Summary */
+export interface TranslationEntry {
+    key: string;
+    original: string;
+    translation: string;
+    operation: string;
+    previousTranslation?: string;
+}
+
+/** 单个用户的翻译汇总 @category Summary */
+export interface UserTranslationSummary {
+    uid: number;
+    username: string;
+    newTranslations: number;
+    edits: number;
+    uniqueKeys: number;
+    translations: TranslationEntry[];
+}
+
+/** 每日翻译汇总 @category Summary */
+export interface TranslationSummary {
+    date: string;
+    projectId: number;
+    totalEntries: number;
+    totalUniqueKeys: number;
+    users: UserTranslationSummary[];
+}

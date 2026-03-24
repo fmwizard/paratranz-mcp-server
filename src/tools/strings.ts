@@ -24,14 +24,16 @@ export function registerStringTools(server: McpServer, client: ParaTranzClient) 
                 pageSize: z.number().int().min(1).max(800).default(50).describe("每页数量，默认 50"),
                 file: z.number().int().min(1).optional().describe("按文件 ID 筛选"),
                 stage: StageSchema.optional().describe("按词条状态筛选"),
+                detailed: z.boolean().optional().describe("是否返回词条的历史记录和注释，默认不返回"),
             },
         },
-        async ({ projectId, page, pageSize, file, stage }) => {
+        async ({ projectId, page, pageSize, file, stage, detailed }) => {
             const result = await client.getStrings(projectId, {
                 page,
                 pageSize,
                 file,
                 stage: stage as any,
+                detailed,
             });
             return {
                 content: [

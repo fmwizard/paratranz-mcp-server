@@ -4,7 +4,7 @@
 
 ## 功能
 
-通过 24 个 MCP Tools 覆盖 ParaTranz 核心 API：
+通过 25 个 MCP Tools 覆盖 ParaTranz 核心 API：
 
 | 分类 | 工具 | 说明 |
 |------|------|------|
@@ -13,6 +13,7 @@
 | **词条** | `list_strings` / `get_string` / `update_string` / `batch_update_strings` | 词条搜索、翻译、批量操作 |
 | **术语** | `list_terms` / `get_term` / `create_term` / `update_term` / `delete_term` | 术语表 CRUD |
 | **历史** | `get_history` | 翻译/编辑历史记录 |
+| **汇总** | `get_translation_summary` | 按日期聚合每日翻译汇总，按用户分组、按 key 去重 |
 | **成员** | `list_members` | 项目成员与权限 |
 | **讨论** | `list_issues` / `get_issue` / `create_issue` / `reply_to_issue` | 项目讨论管理 |
 | **导出** | `get_export_status` / `trigger_export` | 翻译包导出 |
