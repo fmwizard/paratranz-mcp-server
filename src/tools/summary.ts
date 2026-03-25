@@ -10,6 +10,7 @@ import type {
     TranslationEntry,
     RevisionDetail,
 } from "../types.js";
+import { formatSummaryMarkdown } from "./summary-format.js";
 
 /** 最大遍历页数，防止无限循环 */
 const MAX_PAGES = 20;
@@ -37,6 +38,7 @@ export function registerSummaryTools(server: McpServer, client: ParaTranzClient)
                 "保留每个词条的完整编辑链路（revisions），包含翻译变更和状态变更。" +
                 "返回每个用户的新翻译数、编辑数、审核数和全部词条明细。" +
                 "最多遍历 20 页（16000 条）历史记录。" +
+                "支持 format 参数切换 JSON/Markdown 输出，detail 参数控制是否包含词条明细。" +
                 "注意：date 参数会按 timezone 指定的时区解释，默认为北京时间 (UTC+8)。",
             inputSchema: {
                 projectId: z.number().int().min(1).describe("项目 ID"),
@@ -52,9 +54,21 @@ export function registerSummaryTools(server: McpServer, client: ParaTranzClient)
                     .describe(
                         "时区偏移量，格式如 '+08:00'（北京时间）、'+00:00'（UTC）。默认 '+08:00'"
                     ),
+                format: z
+                    .enum(["json", "markdown"])
+                    .default("json")
+                    .describe(
+                        "输出格式：json（默认，结构化数据）或 markdown（LLM 友好的可读格式）"
+                    ),
+                detail: z
+                    .enum(["overview", "full"])
+                    .default("full")
+                    .describe(
+                        "详细程度：full（默认，含全部词条明细）或 overview（仅用户统计，不含 translations 数组）"
+                    ),
             },
         },
-        async ({ projectId, date, uid, timezone }) => {
+        async ({ projectId, date, uid, timezone, format, detail }) => {
             // 计算目标日期在用户时区下对应的 UTC 范围
             const offsetMinutes = parseTimezoneOffset(timezone);
             // 用户时区的 00:00:00 → UTC 时间 = 00:00:00 - offset
@@ -217,11 +231,24 @@ export function registerSummaryTools(server: McpServer, client: ParaTranzClient)
                 users,
             };
 
+            // detail=overview 时剥离 translations 数组
+            if (detail === "overview") {
+                summary.users = summary.users.map((u) => ({
+                    ...u,
+                    translations: [],
+                }));
+            }
+
+            const text =
+                format === "markdown"
+                    ? formatSummaryMarkdown(summary, detail)
+                    : JSON.stringify(summary, null, 2);
+
             return {
                 content: [
                     {
                         type: "text" as const,
-                        text: JSON.stringify(summary, null, 2),
+                        text,
                     },
                 ],
             };
