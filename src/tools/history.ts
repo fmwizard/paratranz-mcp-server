@@ -11,7 +11,9 @@ export function registerHistoryTools(server: McpServer, client: ParaTranzClient)
             description:
                 "获取项目历史记录。可按用户、词条、类型筛选。" +
                 "类型: text=词条历史(默认), term=术语修改, import=导入历史, comment=评论记录。" +
-                "支持 MCP 层后过滤: field 和 operation（API 返回后过滤，单页实际条数可能少于 pageSize）",
+                "支持 MCP 层后过滤: field 和 operation（API 返回后过滤，单页实际条数可能少于 pageSize）。" +
+                "注意：返回的 createdAt 时间戳为 UTC 时区（如 2026-03-25T04:52:35.675Z），" +
+                "北京时间 = UTC + 8 小时。",
             inputSchema: {
                 projectId: z.number().int().min(1).describe("项目 ID"),
                 page: z.number().int().min(1).default(1).describe("页码，默认 1"),

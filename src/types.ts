@@ -355,13 +355,22 @@ export interface UserActivity {
     history?: History;
 }
 
+/** 单条历史变更明细 @category Summary */
+export interface RevisionDetail {
+    time: string;
+    field: string;
+    from: string;
+    to: string;
+    operation: string;
+}
+
 /** 翻译条目明细（用于每日汇总） @category Summary */
 export interface TranslationEntry {
     key: string;
     original: string;
     translation: string;
     operation: string;
-    previousTranslation?: string;
+    revisions: RevisionDetail[];
 }
 
 /** 单个用户的翻译汇总 @category Summary */
@@ -370,6 +379,7 @@ export interface UserTranslationSummary {
     username: string;
     newTranslations: number;
     edits: number;
+    reviews: number;
     uniqueKeys: number;
     translations: TranslationEntry[];
 }
@@ -377,6 +387,7 @@ export interface UserTranslationSummary {
 /** 每日翻译汇总 @category Summary */
 export interface TranslationSummary {
     date: string;
+    timezone: string;
     projectId: number;
     totalEntries: number;
     totalUniqueKeys: number;
