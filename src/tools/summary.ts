@@ -100,6 +100,11 @@ export function registerSummaryTools(server: McpServer, client: ParaTranzClient)
                         break;
                     }
 
+                    // 官方 API 的 uid 过滤近期失效，在 MCP 层强制过滤
+                    if (uid !== undefined && record.uid !== uid) {
+                        continue;
+                    }
+
                     // 只保留目标日期内、field 为 translation 或 stage 的记录
                     if (
                         recordTime <= dateEnd &&
